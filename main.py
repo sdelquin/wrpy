@@ -1,6 +1,8 @@
+from pprint import pprint
+
 from wrpy import WordReference
 
 wr = WordReference()
-wr.translate('mesa')
+wr.translate('avión')
 
-print(wr.sections)
+pprint(wr.sections)
