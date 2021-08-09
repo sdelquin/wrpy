@@ -1,10 +1,34 @@
+import re
+
 import requests
 import user_agent
 from bs4 import BeautifulSoup
 
 from wrpy import services
 
-TRANSLATION_URL = 'https://www.wordreference.com/{from_lang}{to_lang}/{word}'
+WR_URL = 'https://www.wordreference.com/'
+TRANSLATION_URL = WR_URL + '{from_lang}{to_lang}/{word}'
+
+
+def get_available_langs():
+    ua = user_agent.generate_user_agent()
+    response = requests.get(WR_URL, headers={'User-Agent': ua})
+    soup = BeautifulSoup(response.text, 'html.parser')
+    select = soup.find('select', id='fSelect')
+    langs = []
+    for optgroup in select.find_all('optgroup'):
+        for option in optgroup.find_all('option', string=re.compile(r'.*-.*')):
+            from_lang_label, to_lang_label = option.string.strip().split('-')
+            from_lang_code, to_lang_code = option['id'][:2], option['id'][2:]
+            langs.append(
+                dict(
+                    from_lang_label=from_lang_label,
+                    from_lang_code=from_lang_code,
+                    to_lang_label=to_lang_label,
+                    to_lang_code=to_lang_code,
+                )
+            )
+    return langs
 
 
 class WordReference:
