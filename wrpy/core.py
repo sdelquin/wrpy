@@ -10,16 +10,21 @@ WR_URL = 'https://www.wordreference.com/'
 TRANSLATION_URL = WR_URL + '{from_lang}{to_lang}/{word}'
 
 
-def get_available_langs():
+def get_available_langs(lang_filter: str = None):
     ua = user_agent.generate_user_agent()
     response = requests.get(WR_URL, headers={'User-Agent': ua})
     soup = BeautifulSoup(response.text, 'html.parser')
     select = soup.find('select', id='fSelect')
     langs = []
+    lang_filter = lang_filter.title() if lang_filter is not None else ''
     for optgroup in select.find_all('optgroup'):
         for option in optgroup.find_all('option', string=re.compile(r'.*-.*')):
             from_lang_label, to_lang_label = option.string.strip().split('-')
             from_lang_code, to_lang_code = option['id'][:2], option['id'][2:]
+            if lang_filter and (
+                from_lang_label != lang_filter and to_lang_label != lang_filter
+            ):
+                continue
             langs.append(
                 dict(
                     from_lang_label=from_lang_label,
