@@ -4,19 +4,30 @@ from bs4 import BeautifulSoup
 
 from wrpy import services
 
-TRANSLATION_URL = 'https://www.wordreference.com/esen/{text}'
+TRANSLATION_URL = 'https://www.wordreference.com/{from_lang}{to_lang}/{word}'
 
 
 class WordReference:
-    def __init__(self):
+    def __init__(self, from_lang, to_lang):
+        self.from_lang = from_lang
+        self.to_lang = to_lang
         self.user_agent = user_agent.generate_user_agent()
 
-    def translate(self, text):
-        url = TRANSLATION_URL.format(text=text)
+    def translate(self, word):
+        url = TRANSLATION_URL.format(
+            from_lang=self.from_lang, to_lang=self.to_lang, word=word
+        )
         response = requests.get(url, headers={'User-Agent': self.user_agent})
         soup = BeautifulSoup(response.text, 'html.parser')
 
-        self.sections = []
+        translation = dict(
+            word=word,
+            from_lang=self.from_lang,
+            to_lang=self.to_lang,
+            url=url,
+            translations=[],
+        )
+
         for table in soup.find_all('table', 'WRD'):
             entries = []
             last_row_class = 'even'  # each row starts with even class (0-index)
@@ -32,10 +43,12 @@ class WordReference:
                 entries.append(services.parse_entry(entry))
 
             section_title = table.tr.td['title']
-            for section in self.sections:
+            for section in translation['translations']:
                 if section['title'] == section_title:
                     break
             else:
                 section = {'title': section_title, 'entries': []}
-                self.sections.append(section)
+                translation['translations'].append(section)
             section['entries'].extend(entries)
+
+        return translation
