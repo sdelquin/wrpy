@@ -53,6 +53,9 @@ class WordReference:
         response = requests.get(url, headers={'User-Agent': self.user_agent})
         soup = BeautifulSoup(response.text, 'html.parser')
 
+        if p := soup.find('p', id='noEntryFound'):
+            raise NameError(p.string)
+
         translation = dict(
             word=word,
             from_lang=self.from_lang,
