@@ -17,20 +17,17 @@ def parse_to_word(entry):
     to_word = []
     for tr in entry:
         if td := tr.find('td', 'ToWrd'):
-            meaning = [td.contents[0].strip()]
-            # include direct spans as part of meaning
-            for span in td.find_all('span', recursive=False):
-                meaning.append(span.string.strip())
-            meaning = ' '.join(meaning)
-
-            notes = None
-            if span := tr.find('span', 'dsense'):
-                notes = span.i.text.strip()
-
             grammar = None
             if em := td.find('em', 'POS2'):
                 if (span := em.span) is not None:
                     grammar = em.span.i.text.strip()
+                em.decompose()
+
+            meaning = td.text.strip().replace('⇒', '')
+
+            notes = None
+            if span := tr.find('span', 'dsense'):
+                notes = span.i.text.strip()
 
             to_word.append(dict(meaning=meaning, notes=notes, grammar=grammar))
     return to_word
