@@ -88,3 +88,39 @@ def test_hablar_esit():
     assert additional_entries[2]['to_word'][0]['meaning'] == 'parlare, intervenire'
     assert additional_entries[3]['to_word'][0]['meaning'] == 'essere in contatto con [qlcn]'
     assert additional_entries[3]['to_word'][2]['notes'] == 'informale'
+
+
+def test_market_enes():
+    '''Testing translation of word "market" from English to Spanish'''
+    wr = WordReference('enes')
+    word = 'market'
+    response = wr.translate(word)
+
+    assert response['url'] == 'https://www.wordreference.com/enes/market'
+    assert response['word'] == word
+    assert response['from_lang'] == 'English'
+    assert response['to_lang'] == 'Spanish'
+
+    main_entries = response['translations'][0]['entries']
+    assert len(main_entries) == 5
+    assert main_entries[4]['from_word']['source'] == 'market [sth]'
+    assert main_entries[4]['from_word']['grammar'] == 'transitive verb'
+
+    additional_entries = response['translations'][1]['entries']
+    assert len(additional_entries) == 4
+
+    compound_entries = response['translations'][2]['entries']
+    assert len(compound_entries) == 87
+    assert compound_entries[3]['to_example'][0].startswith('El mercado alcista')
+    assert compound_entries[17]['from_example'].startswith('Three quarters')
+    assert len(compound_entries[17]['to_example']) == 2
+    assert compound_entries[17]['to_example'][0].startswith('El mercado interno')
+    assert compound_entries[17]['to_example'][1].startswith('Tres cuartos')
+    assert compound_entries[31]['from_word']['source'] == 'flea market'
+    assert compound_entries[31]['context'] == 'market selling antiques, etc.'
+    assert compound_entries[31]['to_word'][0]['meaning'] == 'mercado de pulgas'
+    assert compound_entries[31]['to_word'][0]['grammar'] == 'locución nominal masculina'
+    assert compound_entries[31]['to_word'][1]['meaning'] == 'mercadillo'
+    assert compound_entries[31]['to_word'][1]['notes'] == 'ES'
+    assert compound_entries[31]['to_word'][2]['meaning'] == 'mercado persa'
+    assert compound_entries[31]['to_word'][2]['notes'] == 'CL'
