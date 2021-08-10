@@ -36,7 +36,8 @@ def get_available_dicts(lang_filter: str = None):
 
 
 class WordReference:
-    def __init__(self, dict_code: str):
+    def __init__(self, from_lang: str, to_lang: str = None):
+        dict_code = from_lang + to_lang if to_lang is not None else from_lang
         self.dict_code = dict_code.lower()
         available_dicts = get_available_dicts()
         if self.dict_code not in available_dicts:
@@ -84,3 +85,9 @@ class WordReference:
             section['entries'].extend(entries)
 
         return translation
+
+    def __str__(self):
+        return f'WordReference translations from {self.from_lang} to {self.to_lang}'
+
+    def __repr__(self):
+        return str(self)
