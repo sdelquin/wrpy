@@ -1,3 +1,3 @@
 requests
-user_agent
 beautifulsoup4
+user_agent==0.1.9
