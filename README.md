@@ -1,6 +1,6 @@
 # wrpy
 
-This is a Python package to obtain translations from wordreference.com transforming returned data into normalized and structured datatypes.
+This is a Python package to obtain translations from [wordreference.com](https://wordreference.com) transforming returned data into normalized and structured datatypes.
 
 ## Installation
 
@@ -61,7 +61,7 @@ You can get the **available dictionaries** using the following function:
  'aren': {'from': 'Arabic', 'to': 'English'}}
 ```
 
-> ⚠️ &nbsp;Next dicts are not working properly since the response is not structured in the same way as the others:
+> ⚠️ &nbsp;Next dicts are not working properly since their response is not structured in the same way as the others:
 >
 > - Spanish to Catalan
 > - Russian to English
@@ -146,10 +146,10 @@ response {}
 
 ```
 
-Response is composed by sections (inside the `translations` list) as they appear in wordreference.com
+Response is composed by sections (inside the `translations` list) as they appear in [wordreference.com](https://wordreference.com)
 
 Number of entries is limited to 100 results.
 
 ## Disclaimer
 
-The workflow of this package is based on scraping of wordreference.com. Thus, future changes on the structure of html response may affect the results.
+The workflow of this package is based on scraping of [wordreference.com](https://wordreference.com). Thus, future changes on the structure of html response may affect the results.
