@@ -4,7 +4,7 @@ import requests
 import user_agent
 from bs4 import BeautifulSoup
 
-from wrpy import services
+from . import services
 
 WR_URL = 'https://www.wordreference.com/'
 TRANSLATION_URL = WR_URL + '{dict_code}/{word}'
@@ -41,9 +41,7 @@ class WordReference:
         self.dict_code = dict_code.lower()
         available_dicts = get_available_dicts()
         if self.dict_code not in available_dicts:
-            raise NotImplementedError(
-                f'{dict_code} is not available as a translation dictionary'
-            )
+            raise NotImplementedError(f'{dict_code} is not available as a translation dictionary')
         self.from_lang = available_dicts[self.dict_code]['from']
         self.to_lang = available_dicts[self.dict_code]['to']
         self.user_agent = user_agent.generate_user_agent()
@@ -66,9 +64,10 @@ class WordReference:
 
         for table in soup.find_all('table', 'WRD'):
             entries = []
-            last_row_class = 'even'  # each row starts with even class (0-index)
             entry = []
-            for tr in table.find_all('tr', ['even', 'odd']):
+            translate_rows = table.find_all('tr', ['even', 'odd'])
+            last_row_class = translate_rows[0]['class'][0]
+            for tr in translate_rows:
                 current_row_class = tr['class'][0]
                 if current_row_class != last_row_class:
                     entries.append(services.parse_entry(entry))

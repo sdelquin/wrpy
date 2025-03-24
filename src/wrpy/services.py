@@ -21,6 +21,8 @@ def parse_to_word(entry):
             if em := td.find('em', 'POS2'):
                 if (span := em.span) is not None:
                     grammar = em.span.i.text.strip()
+                else:
+                    grammar = em.text.strip()
                 em.decompose()
 
             meaning = td.text.strip().replace('⇒', '')

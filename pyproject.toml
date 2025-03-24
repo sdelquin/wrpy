@@ -1,0 +1,22 @@
+[project]
+name = "wrpy"
+version = "0.1.2"
+description = "Get translations from WordReference"
+readme = "README.md"
+authors = [{ name = "Sergio Delgado Quintero", email = "sdelquin@gmail.com" }]
+requires-python = ">=3.8"
+dependencies = [
+    "beautifulsoup4>=4.13.3",
+    "requests>=2.32.3",
+    "user-agent>=0.1.10",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+
+[dependency-groups]
+dev = ["ipython", "pytest"]
