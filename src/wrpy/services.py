@@ -29,7 +29,8 @@ def parse_to_word(entry):
 
             notes = None
             if span := tr.find('span', 'dsense'):
-                notes = span.i.text.strip()
+                if inner_span := span.find('span'):
+                    notes = inner_span.text.strip()
 
             to_word.append(dict(meaning=meaning, notes=notes, grammar=grammar))
     return to_word

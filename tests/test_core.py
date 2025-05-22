@@ -81,10 +81,10 @@ def test_salir_esde():
     assert first_entry['from_word']['grammar'] == 'vi'
     assert first_entry['context'] is None
     assert first_entry['to_word'][0]['meaning'] == 'rausgehen'
-    assert first_entry['to_word'][0]['notes'] is None
+    assert first_entry['to_word'][0]['notes'] == 'literarisch'
     assert first_entry['to_word'][0]['grammar'] == 'Vi, sepa'
     assert first_entry['to_word'][1]['meaning'] == 'hinausgehen'
-    assert first_entry['to_word'][1]['notes'] is None
+    assert first_entry['to_word'][1]['notes'] == 'literarisch'
     assert first_entry['to_word'][1]['grammar'] == 'Vi, sepa'
     assert first_entry['to_word'][2]['meaning'] == 'hinaustreten'
     assert first_entry['to_word'][2]['notes'] == 'literarisch'
@@ -143,7 +143,7 @@ def test_market_enes():
     assert first_entry['from_word']['grammar'] == 'n'
     assert first_entry['context'] == 'street stalls'
     assert first_entry['to_word'][0]['meaning'] == 'mercado'
-    assert first_entry['to_word'][0]['notes'] is None
+    assert first_entry['to_word'][0]['notes'] == 'ES'
     assert first_entry['to_word'][0]['grammar'] == 'nm'
     assert first_entry['to_word'][1]['meaning'] == 'mercadillo'
     assert first_entry['to_word'][1]['notes'] == 'ES'
