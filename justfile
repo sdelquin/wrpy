@@ -3,7 +3,7 @@ build: clean
     uv build
 
 # Publish project to PyPI
-publish:
+publish: build
     uvx uv-publish
 
 # Clean project
