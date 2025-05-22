@@ -1,6 +1,6 @@
 [project]
 name = "wrpy"
-version = "0.1.2"
+version = "0.1.3"
 description = "Get translations from WordReference"
 readme = "README.md"
 authors = [{ name = "Sergio Delgado Quintero", email = "sdelquin@gmail.com" }]

@@ -6,6 +6,12 @@ Versions follow [Semantic Versioning](https://semver.org/) (`<major>.<minor>.<pa
 
 Released XXXX-XX-XX
 
+## Version 0.1.3
+
+Released 2025-04-22
+
+- Fix notes capturing.
+
 ## Version 0.1.2
 
 Released 2025-03-24
