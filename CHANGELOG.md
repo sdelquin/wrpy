@@ -6,6 +6,12 @@ Versions follow [Semantic Versioning](https://semver.org/) (`<major>.<minor>.<pa
 
 Released XXXX-XX-XX
 
+## Version 0.1.4
+
+Released 2026-06-20
+
+- Handle WordReference anti-bot cookie challenge via [#2](https://github.com/sdelquin/wrpy/pull/2). Kudos to [kmartins-powens](https://github.com/kmartins-powens)
+
 ## Version 0.1.3
 
 Released 2025-04-22
