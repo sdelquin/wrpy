@@ -8,13 +8,34 @@ from . import services
 
 WR_URL = 'https://www.wordreference.com/'
 TRANSLATION_URL = WR_URL + '{dict_code}/{word}'
+# WordReference gates pages behind a JS cookie challenge (responds HTTP 418 with a
+# tiny <script> that sets this cookie and reloads). requests doesn't run JS, so we
+# send the cookie up front to receive the real HTML.
+WR_COOKIES = {'nginx_wr_human': '1'}
+
+
+def _wr_get(url, ua):
+    """GET a WordReference page with the anti-bot cookie and a User-Agent header.
+
+    Raises requests.HTTPError on a non-2xx response (e.g. the HTTP 418 challenge
+    served when the cookie is rejected) so every call site fails loudly instead
+    of parsing an error/challenge page as valid HTML.
+    """
+    response = requests.get(url, headers={'User-Agent': ua}, cookies=WR_COOKIES, timeout=10)
+    response.raise_for_status()
+    return response
 
 
 def get_available_dicts(lang_filter: str = None):
     ua = user_agent.generate_user_agent()
-    response = requests.get(WR_URL, headers={'User-Agent': ua})
+    response = _wr_get(WR_URL, ua)
     soup = BeautifulSoup(response.text, 'html.parser')
     select = soup.find('select', id='fSelect')
+    if select is None:
+        raise RuntimeError(
+            f'Unexpected WordReference response (HTTP {response.status_code}): '
+            "could not find select#fSelect. The site layout or anti-bot protection may have changed."
+        )
     dicts = {}
     for optgroup in select.find_all('optgroup'):
         for option in optgroup.find_all('option', string=re.compile(r'.*-.*')):
@@ -48,7 +69,7 @@ class WordReference:
 
     def translate(self, word):
         url = TRANSLATION_URL.format(dict_code=self.dict_code, word=word)
-        response = requests.get(url, headers={'User-Agent': self.user_agent})
+        response = _wr_get(url, self.user_agent)
         soup = BeautifulSoup(response.text, 'html.parser')
 
         if p := soup.find('p', id='noEntryFound'):
